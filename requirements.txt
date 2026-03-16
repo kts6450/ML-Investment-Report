@@ -1,0 +1,29 @@
+# ===== 데이터 수집 및 DB =====
+requests>=2.31.0
+psycopg2-binary>=2.9.9
+sqlalchemy>=2.0.25
+python-dotenv>=1.0.0
+
+# ===== 데이터 분석 =====
+pandas>=2.1.4
+numpy>=1.26.3
+
+# ===== 강화학습 =====
+gymnasium>=0.29.1
+stable-baselines3>=2.2.1
+shimmy>=1.3.0
+
+# ===== 백테스트 시각화 =====
+matplotlib>=3.8.2
+
+# ===== API 서버 =====
+fastapi>=0.109.0
+uvicorn>=0.27.0
+pydantic>=2.5.3
+
+# ===== 대시보드 UI =====
+streamlit>=1.31.0
+plotly>=5.18.0
+
+# ===== 유틸리티 =====
+ta>=0.11.0

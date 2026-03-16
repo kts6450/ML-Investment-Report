@@ -1,0 +1,64 @@
+{
+  "name": "Crypto Portfolio - Daily Recommendation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 24 }]
+        }
+      },
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [250, 300],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8000/recommend/json",
+        "method": "GET",
+        "options": {}
+      },
+      "name": "Get Portfolio Weights",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [450, 300],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "webhookUri": "YOUR_DISCORD_WEBHOOK_URL",
+        "text": "=📊 **오늘의 포트폴리오 추천 비중**\n\n• BTC: {{ $json.btc * 100 }}%\n• ETH: {{ $json.eth * 100 }}%\n• CASH: {{ $json.cash * 100 }}%\n\n📅 기준일: {{ $json.date }}",
+        "options": {}
+      },
+      "name": "Discord Alert",
+      "type": "n8n-nodes-base.discord",
+      "position": [650, 200],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "channel": "#crypto-portfolio",
+        "text": "=📊 *오늘의 포트폴리오 추천 비중*\n\n• BTC: {{ $json.btc * 100 }}%\n• ETH: {{ $json.eth * 100 }}%\n• CASH: {{ $json.cash * 100 }}%\n\n📅 기준일: {{ $json.date }}",
+        "options": {}
+      },
+      "name": "Slack Alert",
+      "type": "n8n-nodes-base.slack",
+      "position": [650, 400],
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "Daily Trigger": {
+      "main": [
+        [{ "node": "Get Portfolio Weights", "type": "main", "index": 0 }]
+      ]
+    },
+    "Get Portfolio Weights": {
+      "main": [
+        [
+          { "node": "Discord Alert", "type": "main", "index": 0 },
+          { "node": "Slack Alert", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  }
+}
